@@ -24,9 +24,10 @@ class TicTacToe {
     if (
       this.finished ||
       move < 0 ||
+      move > 8 ||
       this.board[move]
     ) {
-      return false;
+      return;
     }
 
     this.board[move] = this.currentPlayer;
@@ -37,8 +38,6 @@ class TicTacToe {
     if (!this.finished) {
       this.setPlayer();
     }
-
-    return true;
   }
 
   setFinished() {
