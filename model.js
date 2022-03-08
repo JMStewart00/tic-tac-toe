@@ -1,3 +1,14 @@
+const WIN_CONDITIONS = [
+  [0, 1, 2], // top row
+  [3, 4, 5], // middle row
+  [6, 7, 8], // bottom row
+  [0, 3, 6], // left column
+  [1, 4, 7], // middle column
+  [2, 5, 8], // right column
+  [0, 4, 8], // ltr diagonal
+  [2, 4, 6], // rtl diagonal
+];
+
 class TicTacToe {
   constructor() {
     this.board = Array(9).fill();
@@ -9,11 +20,10 @@ class TicTacToe {
     this.drawEvent = new Event();
   }
 
-  play(move) {
+  setBoardState(move) {
     if (
       this.finished ||
       move < 0 ||
-      move > 8 ||
       this.board[move]
     ) {
       return false;
@@ -22,49 +32,38 @@ class TicTacToe {
     this.board[move] = this.currentPlayer;
     this.updateCellEvent.trigger({ move, player: this.currentPlayer });
 
-    this.finished = this.victory() || this.draw();
+    this.finished = this.setFinished();
 
     if (!this.finished) {
-      this.switchPlayer();
+      this.setPlayer();
     }
 
     return true;
   }
 
-  victory() {
-    const lines = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
+  setFinished() {
+    // Make sure there's at le
+    const victoryCaptured = WIN_CONDITIONS.some((line) => {
+      return (
+        this.board[line[0]] &&
+        this.board[line[0]] === this.board[line[1]] &&
+        this.board[line[1]] === this.board[line[2]]
+      );
+    });
 
-    const victory = lines.some(l => this.board[l[0]]
-      && this.board[l[0]] === this.board[l[1]]
-      && this.board[l[1]] === this.board[l[2]]);
-
-    if (victory) {
+    if (victoryCaptured) {
       this.victoryEvent.trigger(this.currentPlayer);
     }
 
-    return victory;
-  }
-
-  draw() {
     const draw = this.board.every(i => i);
-
     if (draw) {
       this.drawEvent.trigger();
     }
 
-    return draw;
+    return victoryCaptured;
   }
 
-  switchPlayer() {
+  setPlayer() {
     this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
   }
 }

@@ -1,6 +1,7 @@
 class View {
   constructor() {
     this.playEvent = new Event();
+    this.cells = []
   }
 
   render() {
@@ -31,11 +32,11 @@ class View {
     this.cells[data.move].innerHTML = data.player;
   }
 
-  victory(winner) {
+  displayVictory(winner) {
     this.message.innerHTML = `${winner} wins!`;
   }
 
-  draw() {
+  displayDraw() {
     this.message.innerHTML = "It's a draw!";
   }
 }

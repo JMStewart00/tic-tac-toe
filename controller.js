@@ -4,7 +4,7 @@ class GameController {
     this.view = new View();
 
     this.view.playEvent.addListener(move => {
-      this.model.play(move);
+      this.model.setBoardState(move);
     });
 
     this.model.updateCellEvent.addListener(data => {
@@ -12,11 +12,11 @@ class GameController {
     });
 
     this.model.victoryEvent.addListener(winner => {
-      this.view.victory(winner);
+      this.view.displayVictory(winner);
     });
 
     this.model.drawEvent.addListener(() => {
-      this.view.draw();
+      this.view.displayDraw();
     });
 
   }
