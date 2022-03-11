@@ -9,7 +9,7 @@ const WIN_CONDITIONS = [
   [2, 4, 6], // rtl diagonal
 ];
 
-class TicTacToe {
+class GameState {
   constructor() {
     this.board = Array(9).fill();
     this.currentPlayer = 'X';
@@ -21,6 +21,7 @@ class TicTacToe {
   }
 
   setBoardState(move) {
+    // disable clicking.
     if (
       this.finished ||
       move < 0 ||
@@ -41,27 +42,35 @@ class TicTacToe {
   }
 
   setFinished() {
-    // Make sure there's at le
-    const victoryCaptured = WIN_CONDITIONS.some((line) => {
+    // Make sure there's a value in the first spot, then compare for equality.
+    const victoryCaptured = WIN_CONDITIONS.some((wc) => {
+      let firstInWC = wc[0];
+      let secondInWC = wc[1];
+      let thirdInWC = wc[2];
+
       return (
-        this.board[line[0]] &&
-        this.board[line[0]] === this.board[line[1]] &&
-        this.board[line[1]] === this.board[line[2]]
+        this.board[firstInWC] &&
+        this.board[firstInWC] === this.board[secondInWC] &&
+        this.board[secondInWC] === this.board[thirdInWC]
       );
     });
 
+    // If winconditions were met trigger the victory for currentPlayer.
     if (victoryCaptured) {
       this.victoryEvent.trigger(this.currentPlayer);
     }
 
+    // if there is something in every part of board and no one wins
+    // All the drawEvent to happen.
     const draw = this.board.every(i => i);
-    if (draw) {
+    if (draw && !victoryCaptured) {
       this.drawEvent.trigger();
     }
 
     return victoryCaptured;
   }
 
+  // Switch players between X and O.
   setPlayer() {
     this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
   }

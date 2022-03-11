@@ -28,8 +28,17 @@ class View {
     document.body.appendChild(this.message);
   }
 
-  updateCell(data) {
-    this.cells[data.move].innerHTML = data.player;
+  // updateCell(data) {
+  //   this.cells[data.move].innerHTML = data.player;
+  // }
+
+  // data = {
+  //   move: 'value',
+  //   player: 'other'
+  // }
+
+  updateCell({ move, player }) {
+    this.cells[move].innerHTML = player;
   }
 
   displayVictory(winner) {

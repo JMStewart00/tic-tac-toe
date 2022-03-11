@@ -1,6 +1,6 @@
 class GameController {
   constructor() {
-    this.model = new TicTacToe();
+    this.model = new GameState();
     this.view = new View();
 
     this.view.playEvent.addListener(move => {
